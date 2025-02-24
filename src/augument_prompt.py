@@ -26,16 +26,16 @@ class AugmentPrompt:
 
         results = vectorstore.similarity_search_with_score(
             query=self.query)
-        contexts,scores = map(list, zip(*results))
-        return contexts,scores
+        contexts, scores = map(list, zip(*results))
+        return contexts, scores
 
-    def augment_prompt(self, user_query, contexts):
+    def augment_prompt(self, user_query, contexts,chat_history=[]):
 
         system_msg = SystemMessage(
             content=(
-                "You are a highly knowledgeable AI expert specializing in Artificial Intelligence, "
-                "machine learning, and Deep Learning. Answer questions with detailed, clear, and technically accurate explanations. "
-                "Always provide examples or analogies when they help clarify complex topics."
+                """You are an AI expert specializing in Artificial Intelligence, Machine Learning, and Deep Learning.
+                    Provide detailed, clear, and technically accurate explanations, incorporating examples or analogies to clarify complex topics
+                    Ensure responses are concise and relevant, avoiding unnecessary phrases or references."""
             )
         )
 
@@ -57,7 +57,7 @@ class AugmentPrompt:
 
         formatted_prompt = chat_prompt.format(
             user_query=user_query,
-            chat_history=[],
+            chat_history=chat_history,
             contexts=contexts
         )
 
