@@ -1,4 +1,4 @@
-```markdown
+
 # Chatbot-ai
 
 A chatbot designed to respond to AI-related queries.
@@ -14,6 +14,7 @@ Chatbot-ai is an interactive platform that leverages advanced Natural Language P
 - **Language Model Framework**: Employs [LangChain](https://github.com/hwchase17/langchain) to manage prompts and chain together various components for coherent responses.
 - **Web Interface**: Provides a user-friendly interface using [Streamlit](https://streamlit.io/), allowing users to interact with the chatbot seamlessly.
 
+```markdown
 ## Installation
 
 To set up the Chatbot-ai locally, follow these steps:
