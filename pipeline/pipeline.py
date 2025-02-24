@@ -28,8 +28,8 @@ class Pipeline:
         logging.info("Vector Database Creation Completed")
 
 
-    def predict(self,query,selected_model_idx):
-        augmnet_query_pipeline = AugmentPromptPipeline(embedding_model=self.embedding_model,k=3,query=query)
+    def predict(self,query,selected_model_idx,chat_history):
+        augmnet_query_pipeline = AugmentPromptPipeline(embedding_model=self.embedding_model,k=3,query=query,chat_history=chat_history)
         augmnet_query,scores = augmnet_query_pipeline.start_augment_prompt()
         print(scores)
         if scores[0] < 0.4:
