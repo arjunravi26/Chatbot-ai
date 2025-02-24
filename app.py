@@ -1,3 +1,4 @@
+from pipeline.pipeline import Pipeline
 import streamlit as st
 
 # Set page configuration as the very first Streamlit command.
@@ -7,18 +8,24 @@ st.set_page_config(
     layout="wide"
 )
 
-from pipeline.pipeline import Pipeline
 
 def load_pipeline():
     return Pipeline()
 
+
 pipeline = load_pipeline()
+
 
 def get_response(model_number, query):
     """Generate a response based on the selected model and user query."""
     model_names = ["Gemini", "DeepSeek"]
-    response = pipeline.predict(query, model_number)
+    if "chat_history" in st.session_state:
+        chat_history = st.session_state.chat_history
+    else:
+        chat_history = []
+    response = pipeline.predict(query, model_number, chat_history)
     return f"**{model_names[model_number]} says:** {response}"
+
 
 def main():
     # Initialize chat history in session state if not already present
@@ -45,16 +52,20 @@ def main():
     # Initial greeting if no conversation exists
     if not st.session_state.chat_history:
         with st.chat_message("assistant"):
-            st.markdown("Hello! Select a model from the sidebar and ask me anything about AI.")
+            st.markdown(
+                "Hello! Select a model from the sidebar and ask me anything about AI.")
 
     # Accept user input
     user_input = st.chat_input("Type your message here")
     if user_input:
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
+        st.session_state.chat_history.append(
+            {"role": "user", "content": user_input})
         response = get_response(model_number, user_input)
-        st.session_state.chat_history.append({"role": "assistant", "content": response})
+        st.session_state.chat_history.append(
+            {"role": "assistant", "content": response})
         with st.chat_message("assistant"):
             st.markdown(response, unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     main()
