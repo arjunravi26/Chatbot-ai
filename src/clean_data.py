@@ -6,15 +6,15 @@ class DataPreprocessing:
         pass
 
     def clean_arvix(self, X):
-        chunk = X.apply(lambda x: re.sub(r'[^a-zA-Z0-9.\s]', '', x))
-        chunk = chunk.apply(lambda x: re.sub(r'[\x00-\x1F\x7F]', ' ', x))
-        chunk = chunk.apply(lambda x: re.sub(r'\s+', ' ', x))
-        chunk = chunk.apply(lambda x: re.sub(r'\s+([,.!?;:])', r'\1', x))
-        chunk = chunk.apply(lambda x: re.sub(r'([,.!?;:])(?=\S)', r'\1 ', x))
-        chunk = chunk.apply(lambda x: re.sub(r'\{', '-', x))
-        chunk = chunk.apply(lambda x: re.sub(r'\}', '', x))
-        chunk = chunk.apply(lambda x: x.strip())
-        return chunk
+        X = re.sub(r'[^a-zA-Z0-9.\s]', '', X)
+        X = re.sub(r'[\x00-\x1F\x7F]', ' ', X)
+        X = re.sub(r'\s+', ' ', X)
+        X = re.sub(r'\s+([,.!?;:])', r'\1', X)
+        X = re.sub(r'([,.!?;:])(?=\S)', r'\1 ', X)
+        X = re.sub(r'\{', '-', X)
+        X = re.sub(r'\}', '', X)
+        X = X.strip()
+        return X
 
     def clean_book_data(self, X):
         X = re.sub(r'[^A-Za-z0-9.]', ' ', X)

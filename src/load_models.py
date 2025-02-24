@@ -1,15 +1,22 @@
-from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_huggingface import HuggingFaceEndpoint
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface.llms import HuggingFaceEndpoint
 from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv
+
+import os
 
 
 class CreateModels:
     def __init__(self):
-        pass
+        load_dotenv()  # This loads variables from .env into the environment
+
+        self.hf_token = os.getenv('HF_TOKEN')
+        if self.hf_token is None:
+            raise ValueError("HF_TOKEN is not set in the environment.")
 
     def create_embedding(self):
         model_name = 'sentence-transformers/all-MiniLM-L6-v2'
-        embedding_model = SentenceTransformerEmbeddings(model_name=model_name)
+        embedding_model = HuggingFaceEmbeddings(model_name=model_name)
         return embedding_model
 
     def create_gemini(self):
@@ -22,21 +29,11 @@ class CreateModels:
         )
         return gemini_model
 
-    def create_llama(self):
-        repo_id = "meta-llama/Llama-3.3-70B-Instruct"
-        llama_model = HuggingFaceEndpoint(
-            repo_id=repo_id,
-            top_k=10,
-            top_p=0.95,
-            temperature=0.6,
-            task='text-generation',
-            repetition_penalty=1.03
-        )
-        return llama_model
 
     def create_deepseek(self):
-        deepseek_repo = "deepseek-ai/deepseek-llm-67b-base"
+        deepseek_repo = "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
         deepseek_model = HuggingFaceEndpoint(
+            huggingfacehub_api_token = self.hf_token,
             repo_id=deepseek_repo, task='text-generation',
             temperature=0.7,
             top_p=0.9,

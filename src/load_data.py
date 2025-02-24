@@ -17,10 +17,11 @@ class DataIngestion:
         return data.to_pandas()
 
     def load_book_pdf(self):
-        pdf_folder = "../Data/"
+        pdf_folder = "D:\BroCamp\Projects\Chatbot-ai\Data"
         try:
             pdf_loader = PyPDFDirectoryLoader(pdf_folder)
             pdf_documents = pdf_loader.load()
         except FileNotFoundError as e:
             logging.info(f"Error from data loading from pdf {e}")
-        return pd.DataFrame([{'source': doc.metadata['source'], 'page_label': doc.metadata['page_label'], 'text': doc.page_content}for doc in pdf_documents[19:1073]])
+        df = pd.DataFrame([{'source': doc.metadata['source'], 'id': doc.metadata['page_label'], 'chunk': doc.page_content}for doc in pdf_documents[19:1073]])
+        return df

@@ -23,11 +23,13 @@ class AugmentPrompt:
     def extract_contexts(self):
         vectorstore = PineconeVectorStore(
             self.pc_index, embedding=self.embedding_model, text_key='chunk')
-        contexts = vectorstore.similarity_search_with_score(
-            query=self.query)
-        return contexts
 
-    def augment_prompt(self):
+        results = vectorstore.similarity_search_with_score(
+            query=self.query)
+        contexts,scores = map(list, zip(*results))
+        return contexts,scores
+
+    def augment_prompt(self, user_query, contexts):
 
         system_msg = SystemMessage(
             content=(
@@ -44,7 +46,7 @@ class AugmentPrompt:
             variable_name="chat_history")
 
         user_msg_template = HumanMessagePromptTemplate.from_template(
-            "{additional_context}")
+            "{contexts}")
 
         chat_prompt = ChatPromptTemplate.from_messages([
             system_msg,
@@ -54,9 +56,9 @@ class AugmentPrompt:
         ])
 
         formatted_prompt = chat_prompt.format(
-            user_query=self.query,
+            user_query=user_query,
             chat_history=[],
-            additional_context=self.extract_contexts
+            contexts=contexts
         )
 
         return formatted_prompt
