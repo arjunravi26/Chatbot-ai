@@ -9,10 +9,10 @@ Chatbot-ai is an interactive platform that leverages advanced Natural Language P
 
 ## Features
 
-- **Natural Language Processing**: Utilizes [spaCy](https://spacy.io/) for efficient text processing and understanding.
-- **Vector Similarity Search**: Implements [Pinecone](https://www.pinecone.io/) to perform similarity searches, enabling the retrieval of contextually relevant information.
-- **Language Model Framework**: Employs [LangChain](https://github.com/hwchase17/langchain) to manage prompts and chain together various components for coherent responses.
-- **Web Interface**: Provides a user-friendly interface using [Streamlit](https://streamlit.io/), allowing users to interact with the chatbot seamlessly.
+- **Natural Language Processing**: Utilizes *spaCy* for efficient text processing and understanding.
+- **Vector Similarity Search**: Implements *Pinecone* to perform similarity searches, enabling the retrieval of contextually relevant information.
+- **Language Model Framework**: Employs *LangChain* to manage prompts and chain together various components for coherent responses.
+- **Web Interface**: Provides a user-friendly interface using *Streamlit* allowing users to interact with the chatbot seamlessly.
 
 ## Installation
 
@@ -58,11 +58,3 @@ This command will launch the Streamlit web interface in your default browser, wh
 ## Contributing
 
 Contributions are welcome! If you'd like to enhance the chatbot or fix issues, please fork the repository, create a new branch, and submit a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-```
-
-
-This `README.md` provides an overview of the project, installation instructions, usage guidelines, and other essential information to help users and contributors understand and engage with the Chatbot-ai project.
