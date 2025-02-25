@@ -13,7 +13,7 @@ class VectorDB:
 
     def create_vectordb(self):
         pc = Pinecone(os.getenv('PINECONE_API'))
-        pc.delete_index(self.index_name)
+        # pc.delete_index(self.index_name)
         index_list = [idx['name'] for idx in pc.list_indexes()]
         if self.index_name not in index_list:
             pc.create_index(name=self.index_name, spec=ServerlessSpec(
