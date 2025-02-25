@@ -5,22 +5,19 @@ class DataPreprocessing:
     def __init__(self):
         pass
 
-    def clean_arvix(self, X):
-        X = re.sub(r'[^a-zA-Z0-9.\s]', '', X)
-        X = re.sub(r'[\x00-\x1F\x7F]', ' ', X)
-        X = re.sub(r'\s+', ' ', X)
-        X = re.sub(r'\s+([,.!?;:])', r'\1', X)
-        X = re.sub(r'([,.!?;:])(?=\S)', r'\1 ', X)
-        X = re.sub(r'\{', '-', X)
-        X = re.sub(r'\}', '', X)
-        X = X.strip()
-        return X
 
-    def clean_book_data(self, X):
-        X = re.sub(r'[^A-Za-z0-9.]', ' ', X)
-        pattern_chapter = r'^\d+\s+Chapter\s+\d+\s+.*?'
-        X = re.sub(pattern_chapter, '', X, count=1)
-        pattern_section = r'^\s+Section\s+\d+\s+.*?'
-        pattern_section = r'^Section\s+\d+(?:\.\d+)?\s+.*?'
-        X = re.sub(pattern_section, '', X, count=1)
-        return X
+def clean_data(X):
+    # 1. Remove Chapter/Section Headings (All Occurrences)
+    X = re.sub(r'^\d+\s+Chapter\s+\d+\s+.*?\n', '', X, flags=re.MULTILINE)
+    X = re.sub(r'^Section\s+\d+(?:\.\d+)?\s+.*?\n', '', X, flags=re.MULTILINE)
+
+    # 2. Be More Selective with Special Character Removal
+    X = re.sub(r'[^A-Za-z0-9.,;:\(\)\{\}\[\]\+\-\*/=<>%&\|\^\$#@~\n]', ' ', X)  # Keep newlines!
+
+    # 3. Handle Code Blocks (Example - Keep them as separate chunks)
+    code_blocks = re.findall(r"```.*?```", X, re.DOTALL)  # Extract code blocks
+    X = re.sub(r"```.*?```", "", X, re.DOTALL)      # Remove code blocks from main text
+
+    # 4. Remove extra whitespace (optional)
+    X = re.sub(r'\s+', ' ', X).strip()
+    return X
